@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+
+// added by Kaavya for deployment
+const path = require('path');
 const connectDB = require('./config/db');
 
 // Route files
@@ -33,6 +36,14 @@ app.get('/api/health', (req, res) => {
     message: 'TexFlow Textile Production API is running smoothly',
     timestamp: new Date().toISOString(),
   });
+});
+
+// added by Kaavya for deployment
+// Serve React frontend
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 // 404 Handler
